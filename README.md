@@ -1,21 +1,16 @@
 # Programmatic Linux (WIP)
-## What is it going to be?
-*Programmatic Linux* is supposed to make a way to take a directory with all the necessary resources (e.g. packages sources/binaries)
-and Lua code describing how to turn them into a working Linux system, and execute the Lua code, and turn the resources into a working Linux system.
-One of the points is to you to be able to take that directory wherever you want (for example send it via Discord to your friend in Australia),
-and there turn it into a working system (e.g. your friend does not know how to set up Steam on Linux but you don't want to bother watching him stream his screen upside down,
-so you just send him the whole system instead).
+## About (quick and dirty version edited by Gemini LLM)
+Programmatic Linux (PL) is a fully reproducible Linux operating-system builder. It takes Lua code—and optionally other resources—and processes it in an isolated, deterministic environment to build an output (e.g., a complete Linux OS). Because the build environment is strictly isolated from the host system, all side-effects are eliminated. Every build is entirely deterministic: given the exact same input, it is guaranteed to produce the exact same output.
 
-*PL* is going to make building of the system as simple as possible. 
-You will be provided multiple Lua APIs that will do for you many tasks common when building a linux system (e.g. generating configs, working with FS, generating CPIO, helping with tarballs/zips, etc.). 
-Beside that you will be also able to split building the entire system into building multiple smaller components, each of them built in an separate container.
-The main Lua piece of code will call the code responsible for building the packages it needs, and the package code will call its packages, and so on, and so on, recursively. 
-The final outlook of the package will be determined solely by the code responsible for building it and the input parameters pass to it - no side effects.
+The implementation is designed to be highly performant. Written entirely in C, it completely bypasses the shell, using Lua as its sole scripting interface. It also leverages a robust caching system that stores every output indexed by a hash of its inputs. If a build is requested multiple times, only the first run is computed; subsequent runs are instantly retrieved from the cache.
 
-The plan is to make as many things accessible from Lua, limiting the need for developer to write low-level code themself. 
-Of course, in such a big ecosystem as Linux, it is not possible to write wrappers for everything in Lua and because of that *PL* is going to provide both high-level and low-level (or even intermediary levels) APIs that you can step a level down whenever you need to.
-## The backstory
-(WIP)
+The core philosophy is similar to Nix and NixOS, but it differs in several critical ways:
+
+Language: Nix uses its own custom functional DSL for describing derivations; Programmatic Linux uses standard Lua.
+
+Architecture: Nix relies heavily on the system shell, a massive standard environment, and a custom file hierarchy. PL is a lean, system-level C program that orchestrates the environment using only direct kernel APIs.
+
+Portability: Nix requires a heavy installation footprint on the host device; PL can be run simply as a portable, standalone executable.
 ## Contribute
 (WIP)
 ## Donate
